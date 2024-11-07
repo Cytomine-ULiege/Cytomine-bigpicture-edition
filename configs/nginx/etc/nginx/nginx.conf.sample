@@ -91,6 +91,11 @@ http {
             proxy_set_header Host $host;
             proxy_pass http://$INTERNAL_URLS_CORE;
         }
+        location /import {
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_pass http://$INTERNAL_URLS_IMS;
+        }
 
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
