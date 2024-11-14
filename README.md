@@ -5,7 +5,7 @@
 
 Cytomine BigPicture Edition is an assemblage of modules from the Cytomine ULiège Community Edition and additional modules specific to BigPicture (including libraries coming from https://github.com/imi-bigpicture). 
 
-This repository provides the new way to install Cytomine Community Edition, based on Docker compose.
+This repository provides way to install Cytomine based on Docker compose.
 
 ## Install
 
