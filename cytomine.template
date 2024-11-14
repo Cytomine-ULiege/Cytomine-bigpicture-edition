@@ -36,7 +36,7 @@ global:
   images:
     constant:
       BIOFORMAT: cytomineuliege/bioformat:v3.1.0
-      CORE: cytomineuliege/core:4.0.0
+      CORE: cytomineuliege/core:bp-0.2.0-ms
       ELASTICSEARCH: docker.elastic.co/elasticsearch/elasticsearch:8.6.2
       LOGSTASH: docker.elastic.co/logstash/logstash:8.6.2
       MONGO: mongo:4.4.18-focal
@@ -45,7 +45,7 @@ global:
       PIMS_CACHE: redis:7.0.8
       POSTGIS: cytomineuliege/postgis:15-3.3-alpine-1.0.0
       RABBITMQ: rabbitmq:3.10
-      WEB_UI: cytomineuliege/web_ui:2.0.0
+      WEB_UI: cytomineuliege/web_ui:bp-0.2.2-ms
 
   internal_docker_urls: # must match respective container hostnames from compose file
     constant: 
