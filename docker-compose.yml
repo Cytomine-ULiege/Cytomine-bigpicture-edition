@@ -91,6 +91,7 @@ services:
     volumes:
       - images_data:$CONTAINER_PATHS_IMAGES
       - download_data:$CONTAINER_PATHS_UPLOADED
+      - ${HOST_PATHS_DATASET_PATH}/dataset:$CONTAINER_PATHS_DATASET
     deploy:
       resources:
         # limits or reservations ?
