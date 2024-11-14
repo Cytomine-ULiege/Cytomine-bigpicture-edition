@@ -19,3 +19,7 @@ The password of the `admin` account is available in the cytomine.yml file : `cat
 To learn how to use Cytomine please refer to the [user guide in our documentation](https://doc.uliege.cytomine.org/user-guide/).
 
 Note: All Cytomine data is now stored in docker volumes (Postgres, Mongo, images and download buffers) and no more in folders.
+
+## Import BigPicture datasets
+
+See the procedure to [import datasets](https://github.com/Cytomine-ULiege/Cytomine-bigpicture-edition/wiki/Procedure-to-import-local-BP-datasets-into-a-Cytomine-instance).
