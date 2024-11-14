@@ -37,6 +37,8 @@ global:
     constant:
       BIOFORMAT: cytomineuliege/bioformat:v3.1.0
       CORE: cytomineuliege/core:4.0.0
+      ELASTICSEARCH: docker.elastic.co/elasticsearch/elasticsearch:8.6.2
+      LOGSTASH: docker.elastic.co/logstash/logstash:8.6.2
       MONGO: mongo:4.4.18-focal
       NGINX: cytomineuliege/nginx:1.22.1-1.0.0
       PIMS: cytomineuliege/pims:bp-0.1.0
@@ -49,6 +51,8 @@ global:
     constant: 
       WEB_UI: web_ui
       CORE: core:8080
+      ELASTICSEARCH: elasticsearch
+      LOGSTASH: logstash
       PIMS: pims:5000
       RABBITMQ: rabbitmq
       BIOFORMAT: bioformat
@@ -62,6 +66,10 @@ global:
       DATASET: /dataset
       IMAGES: /data/images
       UPLOADED: /tmp/uploaded
+
+  elasticsearch:
+    constant:
+      PORT: 9200
 
   javamelody:
     constant:
@@ -140,6 +148,8 @@ services:
         RABBITMQ_PRIVATE_KEY: random_uuid
         RABBITMQ_PUBLIC_KEY: random_uuid
       global:
+        ELASTICSEARCH_HOST: internal_docker_urls.ELASTICSEARCH
+        ELASTICSEARCH_PORT: elasticsearch.PORT
         IMAGE_SERVER_PRIVATE_KEY: keys.IMAGE_SERVER_PRIVATE
         IMAGE_SERVER_PUBLIC_KEY: keys.IMAGE_SERVER_PUBLIC
         POSTGIS_HOST: internal_docker_urls.POSTGIS
@@ -167,6 +177,16 @@ services:
         INSTANCE_HOST_WEBSITE_URL: urls_with_scheme.CORE
         STORAGE_PATH: container_paths.IMAGES
         METADATA_PREFIXES: image_metadata.PREFIXES
+
+    logstash:
+      global:
+        ELASTICSEARCH_HOST: internal_docker_urls.ELASTICSEARCH
+        ELASTICSEARCH_PORT: elasticsearch.PORT
+        POSTGIS_DB_NAME: postgres.DB_NAME
+        POSTGIS_HOST: internal_docker_urls.POSTGIS
+        POSTGIS_PASS: postgres.PASS
+        POSTGIS_PORT: postgres.PORT
+        POSTGIS_USER: postgres.USER
 
     mongo:
       global:
