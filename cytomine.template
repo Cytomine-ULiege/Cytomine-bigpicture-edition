@@ -31,7 +31,7 @@ global:
 
   versions:
     constant: 
-      CYTOMINE_COMMERCIAL: CE2023.1
+      CYTOMINE_COMMERCIAL: BP2024.1
 
   images:
     constant:
