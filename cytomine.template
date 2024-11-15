@@ -41,7 +41,7 @@ global:
       LOGSTASH: docker.elastic.co/logstash/logstash:8.6.2
       MONGO: mongo:4.4.18-focal
       NGINX: cytomineuliege/nginx:1.22.1-1.0.0
-      PIMS: cytomineuliege/pims:bp-0.1.0
+      PIMS: cytomineuliege/pims:bp-0.2.0
       PIMS_CACHE: redis:7.0.8
       POSTGIS: cytomineuliege/postgis:15-3.3-alpine-1.0.0
       RABBITMQ: rabbitmq:3.10
