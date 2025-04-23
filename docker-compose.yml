@@ -2,126 +2,98 @@ version: "3.9"
 services:
 
   mongo:
-    image: $IMAGES_MONGO
-    container_name: mongo
+    image: ${IMAGES_MONGO}
     restart: unless-stopped
     volumes:
-      - ${HOST_PATHS_PROJECT_DATA_PATH}/mongo:/data/db
+      - ${AAA_CONFIG_PROJECT_DATA_PATH}/mongo:/data/db
+    networks:
+      cytomine-network:
+        ipv4_address: 172.18.0.2
 
   postgis:
-    image: $IMAGES_POSTGIS
-    container_name: postgis
+    image: ${IMAGES_POSTGIS}
     restart: unless-stopped
     volumes:
-      - ${HOST_PATHS_PROJECT_DATA_PATH}/postgis/data:/var/lib/postgresql/data
-    deploy:
-      resources:
-        # limits or reservations ?
-        reservations:
-          memory: 8G
-
-  elasticsearch:
-    image: $IMAGES_ELASTICSEARCH
-    container_name: elasticsearch
-    restart: unless-stopped
-    ports:
-      - "9200:9200"
-      - "9300:9300"
-    volumes:
-      - ${HOST_PATHS_PROJECT_DATA_PATH}/elasticsearch/data:/var/lib/elasticsearch/data
-    environment:
-      - discovery.type=single-node
-      - xpack.security.enabled=false
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    mem_limit: 17179869184
-
-  logstash:
-    container_name: logstash
-    image: $IMAGES_LOGSTASH
-    command: logstash -f /usr/share/logstash/config/logstash.conf
-    volumes:
-      - ./configs/logstash:/usr/share/logstash/config
-      - ./configs/logstash:/usr/share/logstash/drivers
-    environment:
-      - POSTGRES_USER=$POSTGRES_USER
-      - POSTGRES_PASS=$POSTGRES_PASS
-    depends_on:
-      - elasticsearch
-      - postgis
-
-  rabbitmq:
-    image: $IMAGES_RABBITMQ
-    container_name: rabbitmq
-    restart: unless-stopped
-
-  bioformat:
-    image: $IMAGES_BIOFORMAT
-    container_name: bioformat
-    restart: unless-stopped
-    volumes:
-      - ${HOST_PATHS_PROJECT_DATA_PATH}/images:$CONTAINER_PATHS_IMAGES
+      - ${AAA_CONFIG_PROJECT_DATA_PATH}/postgis/data:/var/lib/postgresql/data
+    networks:
+      cytomine-network:
+        ipv4_address: 172.18.0.3
 
   pims-cache:
-    image: $IMAGES_PIMS_CACHE
-    container_name: pims-cache
+    image: ${IMAGES_PIMS_CACHE}
     restart: unless-stopped
+    networks:
+      cytomine-network:
+        ipv4_address: 172.18.0.4
 
-  pims: 
-    image: $IMAGES_PIMS
-    container_name: pims
+  pims:
+    image: ${IMAGES_PIMS}
     restart: unless-stopped
     depends_on:
       - nginx
       - pims-cache
-      - rabbitmq
     volumes:
-      - ${HOST_PATHS_PROJECT_DATA_PATH}/images:$CONTAINER_PATHS_IMAGES
-      - ${HOST_PATHS_PROJECT_DATA_PATH}/upload:$CONTAINER_PATHS_UPLOADED
-      - ${HOST_PATHS_DATASET_PATH}/dataset:$CONTAINER_PATHS_DATASET
-    deploy:
-      resources:
-        # limits or reservations ?
-        reservations:
-          memory: 4G
+      - ${AAA_CONFIG_PROJECT_DATA_PATH}/images:${CONTAINER_PATHS_IMAGES}
+    networks:
+      cytomine-network:
+        ipv4_address: 172.18.0.5
 
   core:
-    image: $IMAGES_CORE
-    container_name: core
+    image: ${IMAGES_CORE}
     restart: unless-stopped
     depends_on:
       - nginx
       - postgis
       - mongo
-      - rabbitmq
+      - app-engine
     volumes:
       - /etc/localtime:/etc/localtime
+    networks:
+      cytomine-network:
+        ipv4_address: 172.18.0.6
 
   web_ui:
-    image: $IMAGES_WEB_UI
-    container_name: web_ui
+    image: ${IMAGES_WEB_UI}
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime
+    networks:
+      cytomine-network:
+        ipv4_address: 172.18.0.7
 
   nginx:
-    image: $IMAGES_NGINX
-    container_name: nginx
+    image: ${IMAGES_NGINX}
     restart: unless-stopped
-    depends_on:
-      - web_ui
     ports:
       - 80:80
-    volumes:
-      - ${HOST_PATHS_PROJECT_DATA_PATH}/upload:$CONTAINER_PATHS_UPLOADED
+    networks:
+      cytomine-network:
+        ipv4_address: 172.18.0.8
 
-  # to map nginx ip with urls to host's /etc/hosts
-  etc_hosts_rewriter:
-    image: alpine:latest
-    entrypoint: ["/bin/sh", "/cm_configs/rewrite.sh"]
+  app-engine:
+    image: ${IMAGES_APPENGINE}
+    restart: unless-stopped
     depends_on:
-      - nginx
+      - registry
     volumes:
-      - /etc:/local_etc/
+      - ${AAA_CONFIG_PROJECT_DATA_PATH}/app-engine:/data
+    networks:
+      cytomine-network:
+        ipv4_address: 172.18.0.9
+
+  registry:
+    image: ${IMAGES_REGISTRY}
+    restart: unless-stopped
+    volumes:
+      - ${AAA_CONFIG_PROJECT_DATA_PATH}/registry:/data
+    networks:
+      cytomine-network:
+        ipv4_address: 172.18.0.10
+
+networks:
+  cytomine-network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.0.0/16
