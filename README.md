@@ -3,7 +3,7 @@
 [![](https://img.shields.io/github/v/release/Cytomine-ULiege/Cytomine-bigpicture-edition)](https://github.com/Cytomine-ULiege/Cytomine-bigpicture-edition)
 [![](https://img.shields.io/docker/pulls/cytomine/installer)](https://hub.docker.com/r/cytomine/installer/)
 
-Cytomine BigPicture Edition is an assemblage of modules from the [Cytomine ULiège Community Edition](https://github.com/Cytomine-ULiege/Cytomine-community-edition) and additional modules specific to BigPicture (including libraries coming from https://github.com/imi-bigpicture).
+Cytomine Bigpicture Edition is an assemblage of modules from the [Cytomine Community Edition](https://github.com/cytomine/Cytomine-community-edition) and additional modules specific to the BIGPICTURE project (including libraries coming from https://github.com/imi-bigpicture).
 
 This repository provides a way to install Cytomine based on Docker compose.
 
@@ -43,11 +43,9 @@ sudo docker run -v $(pwd):/install --user "$(id -u):$(id -g)" --rm -it cytomine/
 sudo docker compose up -d
 ```
 
->  As a side effect, this command will write in your local /etc/hosts file.
-
 Cytomine is now ready to be used!
 
-If you have kept the default values in `cytomine.template`, Cytomine is available at http://cytomine.local.
+If you have kept the default values in `cytomine.template`, Cytomine is available at <http://localhost>.
 
 By default, an `admin` account has been created. To connect to Cytomine in your browser, retrieve the admin password by opening the generated `cytomine.yml` file and looking for the `ADMIN_PASSWORD` key, as shown in the snippet below:
 
@@ -68,7 +66,7 @@ or by running the following command:
 cat cytomine.yml | grep ADMIN_PASSWORD:
 ```
 
-> To follow the community edition installation procedure, the documentation is available at https://doc.uliege.cytomine.org/admin-guide/ce/ce-install
+> To follow the community edition installation procedure, the documentation is available at <https://doc.uliege.cytomine.org/admin-guide/bp/installation>
 
 ## Import BigPicture datasets
 
