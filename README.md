@@ -3,7 +3,7 @@
 [![](https://img.shields.io/github/v/release/Cytomine-ULiege/Cytomine-bigpicture-edition)](https://github.com/Cytomine-ULiege/Cytomine-bigpicture-edition)
 [![](https://img.shields.io/docker/pulls/cytomine/installer)](https://hub.docker.com/r/cytomine/installer/)
 
-Cytomine Bigpicture Edition is an assemblage of modules from the [Cytomine Community Edition](https://github.com/cytomine/Cytomine-community-edition) and additional modules specific to the BIGPICTURE project (including libraries coming from https://github.com/imi-bigpicture).
+Cytomine Bigpicture Edition is an assemblage of modules from the [Cytomine Community Edition](https://github.com/cytomine/Cytomine-community-edition) and additional modules specific to the BIGPICTURE project (including libraries coming from <https://github.com/imi-bigpicture>).
 
 This repository provides a way to install Cytomine based on Docker compose.
 
@@ -14,6 +14,8 @@ The requirements to install Cytomine BigPicture edition are:
 * [Docker Engine](https://docs.docker.com/engine/install/)
 * [Git](https://git-scm.com/)
 * Have the **root** permissions on the machine where you want to install Cytomine
+
+> The **root** permissions is only needed for Docker
 
 ## Install
 
@@ -70,4 +72,4 @@ cat cytomine.yml | grep ADMIN_PASSWORD:
 
 ## Import BigPicture datasets
 
-See the procedure to [import datasets](https://github.com/Cytomine-ULiege/Cytomine-bigpicture-edition/wiki/Procedure-to-import-local-BP-datasets-into-a-Cytomine-instance).
+See the documentation to [import datasets](https://doc.uliege.cytomine.org/admin-guide/bp/feature#light-import).
