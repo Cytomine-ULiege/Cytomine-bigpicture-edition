@@ -33,8 +33,6 @@ global:
     constant:
       WEB_UI: web_ui
       CORE: core:8080
-      ELASTICSEARCH: elasticsearch
-      LOGSTASH: logstash
       PIMS: pims:5000
       MONGO: mongo
       NGINX: nginx
@@ -143,8 +141,6 @@ services:
         SUPER_ADMIN_PRIVATE_KEY: random_uuid
         SUPER_ADMIN_PUBLIC_KEY: random_uuid
       global:
-        ELASTICSEARCH_HOST: internal_docker_urls.ELASTICSEARCH
-        ELASTICSEARCH_PORT: elasticsearch.PORT
         IMAGE_SERVER_PRIVATE_KEY: keys.IMAGE_SERVER_PRIVATE
         IMAGE_SERVER_PUBLIC_KEY: keys.IMAGE_SERVER_PUBLIC
         POSTGIS_HOST: aaa_services_uri.POSTGIS
@@ -168,16 +164,6 @@ services:
         INSTANCE_HOST_WEBSITE_URL: urls_with_scheme.CYTOMINE_URL
         STORAGE_PATH: container_paths.IMAGES
         INTERNAL_PROXY_URL: urls_with_scheme.INTERNAL_PROXY
-
-    logstash:
-      global:
-        ELASTICSEARCH_HOST: internal_docker_urls.ELASTICSEARCH
-        ELASTICSEARCH_PORT: elasticsearch.PORT
-        POSTGIS_DB_NAME: postgres.DB_NAME
-        POSTGIS_HOST: internal_docker_urls.POSTGIS
-        POSTGIS_PASS: postgres.PASS
-        POSTGIS_PORT: postgres.PORT
-        POSTGIS_USER: postgres.USER
 
     mongo:
       global:
