@@ -34,6 +34,7 @@ services:
       - pims-cache
     volumes:
       - ${AAA_CONFIG_PROJECT_DATA_PATH}/images:${CONTAINER_PATHS_IMAGES}
+      - ${AAA_CONFIG_DATASET_PATH}:/${CONTAINER_PATHS_DATASET}
     networks:
       cytomine-network:
         ipv4_address: 172.18.0.5

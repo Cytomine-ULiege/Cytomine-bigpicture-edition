@@ -9,6 +9,8 @@ global:
       NAME: cytomine-ce
       # Where are the data stored. Warning, images can be heavy.
       PROJECT_DATA_PATH: ./data
+      # Path to the directory where image dataset folders (if any) are stored for importing large numbers of images.
+      DATASET_PATH: ./data/dataset
       # URL scheme can be either 'http' or 'https'.
       SCHEME: http
       # External port to listen to. Customize if for example port 80 is already taken by a reverse proxy on the server
@@ -71,6 +73,7 @@ global:
   container_paths:
     constant:
       APPENGINE_FILE_STORAGE: /data
+      DATASET: /dataset
       IMAGES: /data/images
       UPLOADED: /tmp/uploaded
 
