@@ -62,7 +62,7 @@ global:
     constant:
       CORE: cytomine/core:5.1.0
       MONGO: cytomine/mongo:1.0.0
-      NGINX: cytomine/nginx:3.0.0
+      NGINX: cytomineuliege/nginx:bp-1.0.0
       PIMS_CACHE: redis:7.2
       PIMS: cytomine/pims-ce-package:ce-1.0.0
       POSTGIS: cytomine/postgis:1.5.1
