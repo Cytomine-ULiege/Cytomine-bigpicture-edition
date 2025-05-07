@@ -11,6 +11,8 @@ global:
       PROJECT_DATA_PATH: ./data
       # Path to the directory where image dataset folders (if any) are stored for importing large numbers of images.
       DATASET_PATH: ./data/dataset
+      # Path to the directory where the weights of the models (if any) are stored.
+      WEIGHT_PATH: ./data/weight
       # URL scheme can be either 'http' or 'https'.
       SCHEME: http
       # External port to listen to. Customize if for example port 80 is already taken by a reverse proxy on the server
@@ -34,12 +36,14 @@ global:
   aaa_services_uri:
     constant:
       WEB_UI: web_ui
+      CBIR: cbir:6000
       CORE: core:8080
       PIMS: pims:5000
       MONGO: mongo
       NGINX: nginx
       PIMS_CACHE: pims-cache:6379
       POSTGIS: postgis
+      REDIS: redis
       APPENGINE: app-engine:8080
       REGISTRY: registry
 
@@ -60,6 +64,7 @@ global:
 
   images:
     constant:
+      CBIR: cytomineuliege/cbir:0.3.0
       CORE: cytomine/core:5.1.0
       MONGO: cytomine/mongo:1.0.0
       NGINX: cytomineuliege/nginx:bp-1.0.0
@@ -73,6 +78,7 @@ global:
   container_paths:
     constant:
       APPENGINE_FILE_STORAGE: /data
+      CBIR_DATA: /data/cbir
       DATASET: /dataset
       IMAGES: /data/images
       UPLOADED: /tmp/uploaded
@@ -118,6 +124,15 @@ global:
       PASS:
         type: openssl
         length: 32
+
+  cbir:
+    constant:
+      HOST: redis
+      DB: 0
+
+  redis:
+    constant:
+      PORT: 6380
 
   keys:
     constant:
@@ -218,6 +233,7 @@ services:
         INTERNAL_URLS_IMS2: aaa_services_uri.PIMS
         INTERNAL_URLS_IMS3: aaa_services_uri.PIMS
         INTERNAL_URLS_APPENGINE: aaa_services_uri.APPENGINE
+        INTERNAL_URLS_CBIR: aaa_services_uri.CBIR
         VERSIONS_CYTOMINE_COMMERCIAL: versions.CYTOMINE_COMMERCIAL
         IMAGES_CORE: images.CORE
         IMAGES_MONGO: images.MONGO
@@ -247,3 +263,10 @@ services:
         SCHEDULER_MASTER_URL: app-engine.SCHEDULER_MASTER_URL
         SCHEDULER_OAUTH_TOKEN: app-engine.SCHEDULER_OAUTH_TOKEN
         SCHEDULER_USERNAME: app-engine.SCHEDULER_USERNAME
+
+    cbir:
+      global:
+        DATA_PATH: container_paths.CBIR_DATA
+        DB: cbir.DB
+        HOST: cbir.HOST
+        PORT: redis.PORT
