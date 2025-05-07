@@ -17,13 +17,13 @@ The requirements to install Cytomine BigPicture edition are:
 
 > The **root** permissions is only needed for Docker
 
-## Install
+## Installation
 
 To install Cytomine BigPicture edition, follow the steps below:
 
 1. Clone the repository on your machine:
 ```bash
-git clone https://github.com/Cytomine-ULiege/Cytomine-bigpicture-edition.git
+git clone --branch BP2025.1 https://github.com/Cytomine-ULiege/Cytomine-bigpicture-edition.git
 ```
 
 2. Enter the cloned repository:
@@ -68,7 +68,7 @@ or by running the following command:
 cat cytomine.yml | grep ADMIN_PASSWORD:
 ```
 
-> To follow the community edition installation procedure, the documentation is available at <https://doc.uliege.cytomine.org/admin-guide/bp/installation>
+> The Bigpicture edition installation procedure, the documentation is available at <https://doc.uliege.cytomine.org/admin-guide/bp/installation>
 
 ## Import BigPicture datasets
 
