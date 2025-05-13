@@ -9,6 +9,10 @@ global:
       NAME: cytomine-ce
       # Where are the data stored. Warning, images can be heavy.
       PROJECT_DATA_PATH: ./data
+      # Path to the directory where image dataset folders (if any) are stored for importing large numbers of images.
+      DATASET_PATH: ./data/dataset
+      # Path to the directory where the weights of the models (if any) are stored.
+      WEIGHT_PATH: ./data/weight
       # URL scheme can be either 'http' or 'https'.
       SCHEME: http
       # External port to listen to. Customize if for example port 80 is already taken by a reverse proxy on the server
@@ -32,14 +36,14 @@ global:
   aaa_services_uri:
     constant:
       WEB_UI: web_ui
+      CBIR: cbir:6000
       CORE: core:8080
-      ELASTICSEARCH: elasticsearch
-      LOGSTASH: logstash
       PIMS: pims:5000
       MONGO: mongo
       NGINX: nginx
       PIMS_CACHE: pims-cache:6379
       POSTGIS: postgis
+      REDIS: redis
       APPENGINE: app-engine:8080
       REGISTRY: registry
 
@@ -56,15 +60,16 @@ global:
 # Only update variables below if you know what you are doing
   versions:
     constant:
-      CYTOMINE_COMMERCIAL: CE2025.1
+      CYTOMINE_COMMERCIAL: BP2025.1
 
   images:
     constant:
+      CBIR: cytomineuliege/cbir:0.3.0
       CORE: cytomine/core:5.1.0
       MONGO: cytomine/mongo:1.0.0
-      NGINX: cytomine/nginx:3.0.0
+      NGINX: cytomineuliege/nginx:bp-1.0.0
       PIMS_CACHE: redis:7.2
-      PIMS: cytomine/pims-ce-package:ce-1.0.0
+      PIMS: cytomineuliege/pims:bp-0.3.0
       POSTGIS: cytomine/postgis:1.5.1
       WEB_UI: cytomine/web-ui:3.1.0
       APPENGINE: cytomine/app-engine:0.1.0
@@ -73,6 +78,8 @@ global:
   container_paths:
     constant:
       APPENGINE_FILE_STORAGE: /data
+      CBIR_DATA: /data/cbir
+      DATASET: /dataset
       IMAGES: /data/images
       UPLOADED: /tmp/uploaded
 
@@ -118,6 +125,15 @@ global:
         type: openssl
         length: 32
 
+  cbir:
+    constant:
+      HOST: redis
+      DB: 0
+
+  redis:
+    constant:
+      PORT: 6380
+
   keys:
     constant:
       CRYPT4GH_PUBLIC_KEY: crypt4gh_sender_public_key
@@ -143,8 +159,6 @@ services:
         SUPER_ADMIN_PRIVATE_KEY: random_uuid
         SUPER_ADMIN_PUBLIC_KEY: random_uuid
       global:
-        ELASTICSEARCH_HOST: internal_docker_urls.ELASTICSEARCH
-        ELASTICSEARCH_PORT: elasticsearch.PORT
         IMAGE_SERVER_PRIVATE_KEY: keys.IMAGE_SERVER_PRIVATE
         IMAGE_SERVER_PUBLIC_KEY: keys.IMAGE_SERVER_PUBLIC
         POSTGIS_HOST: aaa_services_uri.POSTGIS
@@ -168,16 +182,6 @@ services:
         INSTANCE_HOST_WEBSITE_URL: urls_with_scheme.CYTOMINE_URL
         STORAGE_PATH: container_paths.IMAGES
         INTERNAL_PROXY_URL: urls_with_scheme.INTERNAL_PROXY
-
-    logstash:
-      global:
-        ELASTICSEARCH_HOST: internal_docker_urls.ELASTICSEARCH
-        ELASTICSEARCH_PORT: elasticsearch.PORT
-        POSTGIS_DB_NAME: postgres.DB_NAME
-        POSTGIS_HOST: internal_docker_urls.POSTGIS
-        POSTGIS_PASS: postgres.PASS
-        POSTGIS_PORT: postgres.PORT
-        POSTGIS_USER: postgres.USER
 
     mongo:
       global:
@@ -229,6 +233,7 @@ services:
         INTERNAL_URLS_IMS2: aaa_services_uri.PIMS
         INTERNAL_URLS_IMS3: aaa_services_uri.PIMS
         INTERNAL_URLS_APPENGINE: aaa_services_uri.APPENGINE
+        INTERNAL_URLS_CBIR: aaa_services_uri.CBIR
         VERSIONS_CYTOMINE_COMMERCIAL: versions.CYTOMINE_COMMERCIAL
         IMAGES_CORE: images.CORE
         IMAGES_MONGO: images.MONGO
@@ -258,3 +263,10 @@ services:
         SCHEDULER_MASTER_URL: app-engine.SCHEDULER_MASTER_URL
         SCHEDULER_OAUTH_TOKEN: app-engine.SCHEDULER_OAUTH_TOKEN
         SCHEDULER_USERNAME: app-engine.SCHEDULER_USERNAME
+
+    cbir:
+      global:
+        DATA_PATH: container_paths.CBIR_DATA
+        DB: cbir.DB
+        HOST: cbir.HOST
+        PORT: redis.PORT

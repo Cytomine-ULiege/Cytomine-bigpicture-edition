@@ -34,6 +34,7 @@ services:
       - pims-cache
     volumes:
       - ${AAA_CONFIG_PROJECT_DATA_PATH}/images:${CONTAINER_PATHS_IMAGES}
+      - ${AAA_CONFIG_DATASET_PATH}:/${CONTAINER_PATHS_DATASET}
     networks:
       cytomine-network:
         ipv4_address: 172.18.0.5
@@ -89,6 +90,28 @@ services:
     networks:
       cytomine-network:
         ipv4_address: 172.18.0.10
+
+  redis:
+    image: ${IMAGES_PIMS_CACHE}
+    command: --port 6380
+    restart: unless-stopped
+    volumes:
+      - ${AAA_CONFIG_PROJECT_DATA_PATH}/redis:/data
+    networks:
+      cytomine-network:
+        ipv4_address: 172.18.0.11
+
+  cbir:
+    image: ${IMAGES_CBIR}
+    restart: unless-stopped
+    depends_on:
+      - redis
+    volumes:
+      - ${AAA_CONFIG_PROJECT_DATA_PATH}/cbir:${CONTAINER_PATHS_CBIR_DATA}
+      - ${AAA_CONFIG_WEIGHT_PATH}:/weights
+    networks:
+      cytomine-network:
+        ipv4_address: 172.18.0.12
 
 networks:
   cytomine-network:
