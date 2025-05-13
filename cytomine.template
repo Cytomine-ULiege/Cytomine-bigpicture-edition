@@ -67,7 +67,7 @@ global:
       CBIR: cytomineuliege/cbir:0.3.0
       CORE: cytomine/core:5.1.0
       MONGO: cytomine/mongo:1.0.0
-      NGINX: cytomineuliege/nginx:bp-1.0.0
+      NGINX: cytomineuliege/nginx:bp-1.1.0
       PIMS_CACHE: redis:7.2
       PIMS: cytomineuliege/pims:bp-0.3.0
       POSTGIS: cytomine/postgis:1.5.1
@@ -270,3 +270,5 @@ services:
         DB: cbir.DB
         HOST: cbir.HOST
         PORT: redis.PORT
+      constant:
+        API_BASE_PATH: /cbir
