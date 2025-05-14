@@ -64,7 +64,7 @@ global:
 
   images:
     constant:
-      CBIR: cytomineuliege/cbir:0.3.0
+      CBIR: cytomineuliege/cbir:0.4.0
       CORE: cytomine/core:5.1.0
       MONGO: cytomine/mongo:1.0.0
       NGINX: cytomineuliege/nginx:bp-1.1.0
