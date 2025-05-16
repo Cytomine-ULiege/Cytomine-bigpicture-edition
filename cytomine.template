@@ -64,14 +64,14 @@ global:
 
   images:
     constant:
-      CBIR: cytomineuliege/cbir:0.4.0
-      CORE: cytomine/core:5.1.0
+      CBIR: cytomineuliege/cbir:0.5.0
+      CORE: cytomineuliege/core:bp-0.3.0
       MONGO: cytomine/mongo:1.0.0
       NGINX: cytomineuliege/nginx:bp-1.1.0
       PIMS_CACHE: redis:7.2
       PIMS: cytomineuliege/pims:bp-0.3.0
       POSTGIS: cytomine/postgis:1.5.1
-      WEB_UI: cytomine/web-ui:3.1.0
+      WEB_UI: cytomineuliege/web-ui:bp-0.3.0
       APPENGINE: cytomine/app-engine:0.1.0
       REGISTRY: registry:2.8.3
 
