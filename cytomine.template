@@ -129,6 +129,7 @@ global:
     constant:
       HOST: redis
       DB: 0
+      EXTRACTOR: resnet
 
   redis:
     constant:
@@ -268,6 +269,7 @@ services:
       global:
         DATA_PATH: container_paths.CBIR_DATA
         DB: cbir.DB
+        EXTRACTOR: cbir.EXTRACTOR
         HOST: cbir.HOST
         PORT: redis.PORT
       constant:
