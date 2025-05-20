@@ -81,6 +81,7 @@ global:
       CBIR_DATA: /data/cbir
       DATASET: /dataset
       IMAGES: /data/images
+      KEYS: /keys
       UPLOADED: /tmp/uploaded
 
   compose:
@@ -137,8 +138,9 @@ global:
 
   keys:
     constant:
-      CRYPT4GH_PUBLIC_KEY: crypt4gh_sender_public_key
-      CRYPT4GH_PRIVATE_KEY: crypt4gh_private_key
+      CRYPT4GH_PUBLIC_KEY: sender.pub.pem
+      CRYPT4GH_PRIVATE_KEY: receiver.sec.pem
+      CRYPT4GH_PASSPHRASE: receiver_passphrase
     auto:
       IMAGE_SERVER_PRIVATE: random_uuid
       IMAGE_SERVER_PUBLIC: random_uuid
@@ -203,6 +205,9 @@ services:
         CACHE_ENABLED: true
         CACHE_URL: redis://${AAA_SERVICES_URI_PIMS_CACHE}
       global:
+        CRYPT4GH_PUBLIC_KEY: keys.CRYPT4GH_PUBLIC_KEY
+        CRYPT4GH_PRIVATE_KEY: keys.CRYPT4GH_PRIVATE_KEY
+        CRYPT4GH_PASSPHRASE: keys.CRYPT4GH_PASSPHRASE
         CYTOMINE_PUBLIC_KEY: keys.IMAGE_SERVER_PUBLIC
         CYTOMINE_PRIVATE_KEY: keys.IMAGE_SERVER_PRIVATE
         ROOT: container_paths.IMAGES
