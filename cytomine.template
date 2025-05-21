@@ -130,6 +130,7 @@ global:
     constant:
       HOST: redis
       DB: 0
+      # Choices: ['resnet', 'hoptim']
       EXTRACTOR: resnet
 
   redis:
