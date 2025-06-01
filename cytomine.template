@@ -73,7 +73,7 @@ global:
       NGINX: cytomineuliege/nginx:bp-1.2.0
       PIMS_CACHE: redis:7.2
       PIMS: cytomineuliege/pims:bp-0.3.1
-      POSTGIS: cytomine/postgis:1.5.1
+      POSTGIS: cytomine/postgis:1.5.3-ci
       WEB_UI: cytomineuliege/web-ui:bp-0.4.0
       APPENGINE: cytomine/app-engine:0.1.0
       REGISTRY: registry:2.8.3
@@ -168,9 +168,6 @@ services:
           type: secret
           length: 256
           whitelist: abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'+.;^_~
-        ADMIN_PASSWORD:
-          type: openssl
-          length: 32
         ADMIN_PRIVATE_KEY: random_uuid
         ADMIN_PUBLIC_KEY: random_uuid
         SUPER_ADMIN_PRIVATE_KEY: random_uuid
@@ -199,6 +196,8 @@ services:
         INSTANCE_HOST_WEBSITE_URL: urls_with_scheme.CYTOMINE_URL
         STORAGE_PATH: container_paths.IMAGES
         INTERNAL_PROXY_URL: urls_with_scheme.INTERNAL_PROXY
+      constant:
+        ADMIN_PASSWORD: password
 
     iam:
       auto:
