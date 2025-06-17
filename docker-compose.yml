@@ -47,6 +47,7 @@ services:
       - nginx
       - postgis
       - mongo
+      - iam
       - app-engine
     volumes:
       - /etc/localtime:/etc/localtime
@@ -92,6 +93,17 @@ services:
       cytomine-network:
         ipv4_address: 172.18.0.10
 
+
+  iam:
+    image: ${IMAGES_IAM}
+    restart: unless-stopped
+    depends_on:
+      - nginx
+      - postgis
+    networks:
+      cytomine-network:
+        ipv4_address: 172.18.0.11
+
   redis:
     image: ${IMAGES_PIMS_CACHE}
     command: --port 6380
@@ -100,7 +112,7 @@ services:
       - ${AAA_CONFIG_PROJECT_DATA_PATH}/redis:/data
     networks:
       cytomine-network:
-        ipv4_address: 172.18.0.11
+        ipv4_address: 172.18.0.12
 
   cbir:
     image: ${IMAGES_CBIR}
@@ -112,7 +124,7 @@ services:
       - ${AAA_CONFIG_WEIGHT_PATH}:/weights
     networks:
       cytomine-network:
-        ipv4_address: 172.18.0.12
+        ipv4_address: 172.18.0.13
 
 networks:
   cytomine-network:

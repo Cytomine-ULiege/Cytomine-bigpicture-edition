@@ -17,6 +17,7 @@ global:
       SCHEME: http
       # External port to listen to. Customize if for example port 80 is already taken by a reverse proxy on the server
       NGINX_HTTP_LISTEN_PORT: 80
+      KC_ADMIN_EMAIL: mail@mail.com
 
   urls_with_scheme:
     constant:
@@ -29,6 +30,7 @@ global:
       PORT: 587
       USER: user
       PASS: password
+      FROM: mail@mail.com
 
   # Those are the URI to connect to the services.
   # If you are running locally or on the same (swarm) docker network, you can use services names declared in the compose file
@@ -46,6 +48,7 @@ global:
       REDIS: redis
       APPENGINE: app-engine:8080
       REGISTRY: registry
+      IAM: iam:8100
 
   app-engine:
     constant:
@@ -65,15 +68,16 @@ global:
   images:
     constant:
       CBIR: cytomineuliege/cbir:0.5.0
-      CORE: cytomineuliege/core:bp-0.3.0
+      CORE: cytomineuliege/core:bp-0.4.1
       MONGO: cytomine/mongo:1.0.0
-      NGINX: cytomineuliege/nginx:bp-1.1.0
+      NGINX: cytomineuliege/nginx:bp-1.2.0
       PIMS_CACHE: redis:7.2
       PIMS: cytomineuliege/pims:bp-0.3.1
-      POSTGIS: cytomine/postgis:1.5.1
-      WEB_UI: cytomineuliege/web-ui:bp-0.3.0
+      POSTGIS: cytomine/postgis:1.5.3-ci
+      WEB_UI: cytomineuliege/web-ui:bp-0.4.1
       APPENGINE: cytomine/app-engine:0.1.0
       REGISTRY: registry:2.8.3
+      IAM: cytomine/iam-ce:1.0.6.-ci
 
   container_paths:
     constant:
@@ -111,6 +115,15 @@ global:
     constant:
       DB_NAME: appengine
       USER: appengine
+    auto:
+      PASS:
+        type: openssl
+        length: 32
+
+  postgres-iam:
+    constant:
+      DB_NAME: iam
+      USER: iam
     auto:
       PASS:
         type: openssl
@@ -155,9 +168,6 @@ services:
           type: secret
           length: 256
           whitelist: abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'+.;^_~
-        ADMIN_PASSWORD:
-          type: openssl
-          length: 32
         ADMIN_PRIVATE_KEY: random_uuid
         ADMIN_PUBLIC_KEY: random_uuid
         SUPER_ADMIN_PRIVATE_KEY: random_uuid
@@ -186,6 +196,36 @@ services:
         INSTANCE_HOST_WEBSITE_URL: urls_with_scheme.CYTOMINE_URL
         STORAGE_PATH: container_paths.IMAGES
         INTERNAL_PROXY_URL: urls_with_scheme.INTERNAL_PROXY
+      constant:
+        ADMIN_PASSWORD: password
+
+    iam:
+      auto:
+        KEYCLOAK_ADMIN_PASSWORD:
+          type: openssl
+          length: 32
+      constant:
+        KEYCLOAK_ADMIN: admin
+        KC_PROXY_HEADERS: xforwarded
+        KC_HTTP_RELATIVE_PATH: /iam
+        KC_HOSTNAME_STRICT_HTTPS: false
+        KC_HOSTNAME_STRICT_BACKCHANNEL: true
+        KC_FEATURES: token-exchange
+
+      global:
+        KC_DB_PASSWORD: postgres-iam.PASS
+        KC_DB_USERNAME: postgres-iam.USER
+        KC_DB_URL_DATABASE: postgres-iam.DB_NAME
+        KC_DB_URL_HOST: aaa_services_uri.POSTGIS
+        KC_DB_URL_PORT: postgres.PORT
+        KC_HOSTNAME: aaa_config.CYTOMINE_HOST
+        KC_HOSTNAME_ADMIN: aaa_config.CYTOMINE_HOST
+        KC_ADMIN_EMAIL: aaa_config.KC_ADMIN_EMAIL
+        KC_SMTP_HOST: smtp.HOST
+        KC_SMTP_PORT: smtp.PORT
+        KC_SMTP_USER: smtp.USER
+        KC_SMTP_PASS: smtp.PASS
+        KC_SMTP_FROM: smtp.FROM
 
     mongo:
       global:
@@ -232,6 +272,9 @@ services:
         APPENGINE_USER: postgres-appengine.USER
         APPENGINE_PASSWORD: postgres-appengine.PASS
         APPENGINE_DB: postgres-appengine.DB_NAME
+        IAM_USER: postgres-iam.USER
+        IAM_PASSWORD: postgres-iam.PASS
+        IAM_DB: postgres-iam.DB_NAME
 
     nginx:
       global:
@@ -242,6 +285,7 @@ services:
         INTERNAL_URLS_IMS3: aaa_services_uri.PIMS
         INTERNAL_URLS_APPENGINE: aaa_services_uri.APPENGINE
         INTERNAL_URLS_CBIR: aaa_services_uri.CBIR
+        INTERNAL_URLS_IAM: aaa_services_uri.IAM
         VERSIONS_CYTOMINE_COMMERCIAL: versions.CYTOMINE_COMMERCIAL
         IMAGES_CORE: images.CORE
         IMAGES_MONGO: images.MONGO
