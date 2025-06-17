@@ -63,7 +63,7 @@ global:
 # Only update variables below if you know what you are doing
   versions:
     constant:
-      CYTOMINE_COMMERCIAL: BP2025.2
+      CYTOMINE_COMMERCIAL: BP2025.1
 
   images:
     constant:
