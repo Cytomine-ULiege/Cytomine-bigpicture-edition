@@ -70,7 +70,7 @@ global:
       CBIR: cytomineuliege/cbir:0.5.0
       CORE: cytomineuliege/core:bp-0.4.1
       MONGO: cytomine/mongo:1.0.0
-      NGINX: cytomineuliege/nginx:bp-1.2.0
+      NGINX: cytomineuliege/nginx:bp-1.2.1
       PIMS_CACHE: redis:7.2
       PIMS: cytomineuliege/pims:bp-0.3.1
       POSTGIS: cytomine/postgis:1.5.3-ci
