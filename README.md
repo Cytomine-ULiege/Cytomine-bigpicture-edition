@@ -1,5 +1,8 @@
 # Cytomine BigPicture Edition
 
+> [!WARNING]  
+> **Deprecated:** This repository is no longer maintained. Please see [cytomine/cytomine](https://github.com/cytomine/cytomine) for the latest version.
+
 [![](https://img.shields.io/github/v/release/Cytomine-ULiege/Cytomine-bigpicture-edition)](https://github.com/Cytomine-ULiege/Cytomine-bigpicture-edition)
 [![](https://img.shields.io/docker/pulls/cytomine/installer)](https://hub.docker.com/r/cytomine/installer/)
 
